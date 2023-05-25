@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from process_game_state import ProcessGameState
 from matplotlib import path
+import seaborn as sns
+from matplotlib import pyplot as plt
 
 
 def main():
@@ -21,7 +23,24 @@ def main():
     df['is_in_region'] = df.apply(
         ProcessGameState.check_is_in_region, args=(polygon, z_boundary), axis=1)
 
-    # print(len(df.loc[df['is_in_region'] == True]))
+    # Q2(a)
+    # Rounds of Team 2 on T side and enters the region / Rounds of Team 2 on T side
+    team_2_on_t_side_in_region_rounds = df.loc[(
+        df['is_in_region'] == True) & (df['side'] == 'T') & (df['team'] == 'Team2')]['round_num'].drop_duplicates()
+    team_2_on_t_side = df.loc[(df['side'] == 'T') & (
+        df['team'] == 'Team2')]['round_num'].drop_duplicates()
+
+    ratio = len(team_2_on_t_side_in_region_rounds) / len(team_2_on_t_side)
+    print(ratio)
+
+    # Q2(c)
+    CT_condition = (df['area_name'] == 'BombsiteB') & (
+        df['side'] == 'CT') & (df['team'] == 'Team2')
+    ax = sns.kdeplot(data=df.loc[CT_condition], x='x', y='y', fill=True,
+                     thresh=0, levels=100, cmap="Blues")
+    plt.show()
+    fig = ax.get_figure()
+
     return
 
 
