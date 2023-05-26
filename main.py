@@ -52,6 +52,7 @@ def main():
     ratio = len(team_2_on_t_side_in_region_rounds) / len(team_2_on_t_side)
     print(ratio)
 
+    # Q2(b)
     # need to pivot wider:
     # 1. Find the time that all of them are in bombsiteB
     # 2. Filter the rows with required weapons
