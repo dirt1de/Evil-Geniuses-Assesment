@@ -44,13 +44,17 @@ def main():
 
     # Q2(a)
     # Rounds of Team 2 on T side and enters the region / Rounds of Team 2 on T side
-    team_2_on_t_side_in_region_rounds = df.loc[(
-        df['is_in_region'] == True) & (df['side'] == 'T') & (df['team'] == 'Team2')]['round_num'].drop_duplicates()
-    team_2_on_t_side = df.loc[(df['side'] == 'T') & (
-        df['team'] == 'Team2')]['round_num'].drop_duplicates()
+    filtered_df = df.loc[(df['side'] == 'T') & (df['team'] == 'Team2')]
+    team_2_on_t_side_rounds = filtered_df['round_num'].drop_duplicates()
+    team_2_on_t_side_in_region_rounds = filtered_df.loc[filtered_df['is_in_region']
+                                                        == True]['round_num'].drop_duplicates()
 
-    ratio = len(team_2_on_t_side_in_region_rounds) / len(team_2_on_t_side)
-    print(ratio)
+    print("Rounds of Team2 on T side: ", len(team_2_on_t_side_rounds))
+    print("Rounds of Team2 on T side & entering light blue region: ",
+          len(team_2_on_t_side_in_region_rounds))
+    ratio = len(team_2_on_t_side_in_region_rounds) / \
+        len(team_2_on_t_side_rounds)
+    print("Proportion: ", ratio)
 
     # Q2(b)
     # need to pivot wider:
@@ -65,11 +69,11 @@ def main():
         has_required_weapons, args=('Rifle', 'SMG', 2, players_cols), axis=1)
 
     print(pivot_df.loc[pivot_df['has_required_weapons']
-          == True]['clock_time'])
+                       == True]['clock_time'])
     # We see that the first timer with required condition is 01:26
     # Since the round of all these ticks are in round 28, the average timer will be 01:26
     print(pivot_df.loc[pivot_df['has_required_weapons']
-          == True]['round_num'])
+                       == True]['round_num'])
 
     # Q2(c)
     CT_condition = (df['area_name'] == 'BombsiteB') & (
